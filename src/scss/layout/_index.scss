@@ -1,7 +1,455 @@
-@forward 'header';
-@forward 'video';
-@forward 'festival';
-@forward 'lineup';
-@forward 'galeria';
-@forward 'boletos';
-@forward 'footer';
+@use "../base/variables" as v;
+
+body {
+  animation: fadeInBody 0.7s ease;
+}
+
+.texto-header {
+  margin: 0;
+  color: #3c185b;
+}
+.header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 16%;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.96);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.header.fixed {
+  box-shadow: 0 1rem 2rem rgba(117, 47, 151, 0.15);
+}
+
+.contenido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.navegacion-principal {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.navegacion-principal a {
+  color: #3c185b;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.navegacion-principal a:hover,
+.navegacion-principal a.active {
+  color: #f53784;
+}
+
+.hero {
+  position: relative;
+  min-height: 32vh;
+  margin-top: 8rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(245, 55, 134, 0.12);
+}
+
+.hero-img {
+  height: 80rem;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.03);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(114 67 135 / 39%),
+    rgb(143 54 91 / 27%)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 91%;
+  padding: 2rem 0;
+  margin: 0;
+}
+
+.hero-text {
+  padding: 2rem 0;
+  color: #fff;
+  animation: slideIn 0.8s ease both;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-text h2 {
+  font-size: 4.4rem;
+  line-height: 1.05;
+  max-width: 55rem;
+}
+
+.hero-meta-card {
+  display: inline-grid;
+  gap: 1rem;
+  background: rgb(0 0 0 / 19%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 1.8rem;
+  padding: 1.8rem 2rem;
+  max-width: 65rem;
+}
+
+.mini-card {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #ffff;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .mini-card {
+    text-align: center;
+  }
+}
+
+.sobre-salon,
+.info-grid,
+.servicios,
+.galeria,
+.suscripciones,
+.contacto {
+  padding: 7rem 0;
+}
+
+.sobre-salon {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.sobre-salon .imagen {
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 2rem 4rem rgba(117, 47, 151, 0.12);
+}
+
+.sobre-salon h2,
+.info-grid h3,
+.servicios h3,
+.galeria h3,
+.suscripciones h3,
+.contacto h3 {
+  margin-bottom: 2rem;
+  color: #3c185b;
+}
+
+.fecha {
+  color: #f53784;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.info-grid .grid-cards,
+.servicio-cards,
+.cards {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-cards,
+.servicio-cards {
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+}
+
+.info-card,
+.servicio-card,
+.card {
+  display: block;
+  background-color: #ffff;
+  border-radius: 2rem;
+  padding: 2.4rem;
+  box-shadow: 0 2rem 3rem rgba(125, 47, 151, 0.08);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.nombre-card {
+  font-size: 2.5rem;
+  text-transform: capitalize;
+}
+
+.info-card:hover,
+.servicio-card:hover,
+.card:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 2.5rem 4rem rgba(125, 47, 151, 0.14);
+}
+
+.info-card h4,
+.servicio-card h4,
+.card h4 {
+  color: #3c185b;
+  margin-bottom: 1.4rem;
+}
+
+.price {
+  margin-top: 1.6rem;
+  color: #f53784;
+  font-weight: 700;
+  font-size: 2.2rem;
+}
+
+.card.featured {
+  border: 1px solid #3c185b;
+}
+.card.featured-plus {
+  border: 1px solid #f53784;
+}
+.card.featured-basic {
+  border: 1px solid #752f97;
+}
+
+.galeria-imagenes {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+}
+
+.galeria-item {
+  width: 100%;
+  height: 28rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  object-fit: cover;
+  transform: scale(1);
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 1.5rem 3rem rgba(117, 47, 151, 0.12);
+  animation: popIn 0.7s ease both;
+}
+
+.galeria-item:hover {
+  transform: scale(1.02);
+}
+
+.galeria-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(23, 23, 23, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  z-index: 100;
+}
+
+.modal-image {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 2rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+
+.btn-cerrar {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 4.2rem;
+  height: 4.2rem;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #111;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+.fadeOut {
+  animation: fadeOut 0.2s ease forwards;
+}
+
+@keyframes fadeInBody {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.suscripciones .cards {
+  grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+}
+
+.contacto .form-contacto {
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 2rem 4rem rgba(117, 47, 151, 0.08);
+  display: grid;
+  gap: 1.8rem;
+}
+
+.form-row {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-row label {
+  font-weight: 700;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(117, 47, 151, 0.12);
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  background-color: #fff;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  background-color: #752f97;
+  color: #fff;
+  border: none;
+  border-radius: 1rem;
+  padding: 1.4rem 2.6rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-actions button:hover {
+  background-color: #5b246f;
+  transform: translateY(-0.1rem);
+}
+
+.alert {
+  border-radius: 1rem;
+  padding: 1.6rem 2rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.alert.success {
+  background-color: #f7eef9;
+  color: #51375c;
+}
+
+.alert.error {
+  background-color: #ffe9e9;
+  color: #7c1d26;
+}
+
+.footer {
+  background-color: #12061c;
+  color: #fff;
+  text-align: center;
+  padding: 3rem 0;
+  margin-top: 4rem;
+}
+
+@media (min-width: 768px) {
+  .hero-text h2 {
+    font-size: 6rem;
+  }
+  .sobre-salon {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .contenido-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero {
+    margin-top: 6rem;
+  }
+  .hero-text h2 {
+    font-size: 3.8rem;
+  }
+  .galeria-item {
+    height: 22rem;
+  }
+}
+
+.footer {
+  background-color: v.$rosa;
+  padding: 2rem 0;
+  margin-top: 4rem;
+  p {
+    text-align: center;
+    color: v.$blanco;
+    margin: 0;
+  }
+}

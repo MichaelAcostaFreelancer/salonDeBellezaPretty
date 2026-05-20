@@ -1,35 +1,19 @@
 <?php
-// Manejo del formulario de contacto y almacenamiento en SQLite
 $successMessage = '';
 $errorMessage = '';
-$dbPath = __DIR__ . '/data/contacts.db';
 
-if (!is_dir(__DIR__ . '/data')) {
-  mkdir(__DIR__ . '/data', 0755, true);
-}
+$dbHost = 'localhost';
+$dbUser = 'root';
+$dbPass = 'root';
+$dbName = 'salon_pretty';
+$dbPort = 3306;
 
-try {
-  // Si la clase SQLite3 no está disponible, usamos un fallback JSON
-  $useSQLite = false;
-  $jsonPath = __DIR__ . '/data/contacts.json';
+$conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
 
-  if (class_exists('SQLite3')) {
-    $useSQLite = true;
-    $db = new SQLite3($dbPath);
-    $db->exec("CREATE TABLE IF NOT EXISTS contacts (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nombre TEXT NOT NULL,
-      telefono TEXT,
-      correo TEXT NOT NULL,
-      mensaje TEXT,
-      created_at TEXT NOT NULL
-    )");
-  } else {
-    // aseguramos el archivo JSON
-    if (!file_exists($jsonPath)) {
-      file_put_contents($jsonPath, json_encode([]));
-    }
-  }
+if ($conn->connect_error) {
+  $errorMessage = 'Error de conexión a la base de datos: ' . $conn->connect_error . '. Verifica que el servidor MySQL esté activo y que las credenciales sean correctas.';
+} else {
+  $conn->set_charset('utf8mb4');
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_contacto'])) {
     $nombre = trim($_POST['nombre'] ?? '');
@@ -42,42 +26,22 @@ try {
     } elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
       $errorMessage = 'Ingresa un correo válido.';
     } else {
-      if ($useSQLite) {
-        $stmt = $db->prepare('INSERT INTO contacts (nombre, telefono, correo, mensaje, created_at) VALUES (:nombre, :telefono, :correo, :mensaje, :created_at)');
-        $stmt->bindValue(':nombre', $nombre, SQLITE3_TEXT);
-        $stmt->bindValue(':telefono', $telefono, SQLITE3_TEXT);
-        $stmt->bindValue(':correo', $correo, SQLITE3_TEXT);
-        $stmt->bindValue(':mensaje', $mensaje, SQLITE3_TEXT);
-        $stmt->bindValue(':created_at', date('Y-m-d H:i:s'), SQLITE3_TEXT);
-        $res = $stmt->execute();
-
-        if ($res) {
-          $successMessage = 'Gracias, tu mensaje ha sido registrado.';
+      $stmt = $conn->prepare('INSERT INTO contacts (nombre, telefono, correo, mensaje) VALUES (?, ?, ?, ?)');
+      if ($stmt) {
+        $stmt->bind_param('ssss', $nombre, $telefono, $correo, $mensaje);
+        if ($stmt->execute()) {
+          $successMessage = 'Gracias, tu mensaje ha sido guardado correctamente.';
         } else {
-          $errorMessage = 'Ocurrió un error al guardar. Intenta de nuevo.';
+          $errorMessage = 'Ocurrió un error al guardar en la base de datos.';
         }
+        $stmt->close();
       } else {
-        // fallback a JSON
-        $records = json_decode(file_get_contents($jsonPath), true) ?: [];
-        $records[] = [
-          'id' => time(),
-          'nombre' => $nombre,
-          'telefono' => $telefono,
-          'correo' => $correo,
-          'mensaje' => $mensaje,
-          'created_at' => date('Y-m-d H:i:s')
-        ];
-
-        if (file_put_contents($jsonPath, json_encode($records, JSON_PRETTY_PRINT))) {
-          $successMessage = 'Gracias, tu mensaje ha sido registrado (almacenado en JSON).';
-        } else {
-          $errorMessage = 'Ocurrió un error al guardar en el almacenamiento alternativo.';
-        }
+        $errorMessage = 'Error en la preparación de la consulta.';
       }
     }
   }
-} catch (Exception $e) {
-  $errorMessage = 'Error en la base de datos: ' . $e->getMessage();
+
+  $conn->close();
 }
 
 ?>
@@ -93,14 +57,14 @@ try {
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="build/css/app.css" />
+  <link rel="stylesheet" href="build/css/app.css?v=2" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
   <header class="header">
     <div class="contenedor contenido-header">
-      <h1>Salón de Belleza Pretty</h1>
+      <h1 class="texto-header">Salón de Belleza Pretty</h1>
       <nav class="navegacion-principal">
         <a href="#inicio">Inicio</a>
         <a href="#servicios">Servicios</a>
@@ -116,8 +80,10 @@ try {
     <div class="hero-overlay">
       <div class="hero-text contenedor">
         <h2>Estilo, cuidado y atención personalizada</h2>
-        <p class="ubicacion"><strong>📍 San Juan, Calle Eusebio Puello, República Dominicana</strong></p>
-        <p class="horario"><strong>⏰ Lunes a domingo 9:00 a.m. - 6:00 p.m.</strong></p>
+        <div class="hero-meta-card">
+          <p class="mini-card"><strong>📍 San Juan, Calle Eusebio Puello, República Dominicana</strong></p>
+          <p class="mini-card"><strong>⏰ Lunes a domingo 9:00 a.m. - 6:00 p.m.</strong></p>
+        </div>
       </div>
     </div>
   </section>
@@ -182,18 +148,18 @@ try {
   <section id="suscripciones" class="suscripciones contenedor">
     <h3>Suscripciones</h3>
     <div class="cards">
-      <div class="card">
-        <h4>Suscripción Básica</h4>
+      <div class="card featured-basic">
+        <h4 class="nombre-card">Suscripción Básica</h4>
         <p>1 servicio + uso de productos gratis.</p>
         <p class="price">RD $1000</p>
       </div>
-      <div class="card">
-        <h4>Suscripción Plus</h4>
+      <div class="card featured-plus">
+        <h4 class="nombre-card">Suscripción Plus</h4>
         <p>2 servicios al mes + promociones exclusivas + uso de productos gratis.</p>
         <p class="price">RD $1500</p>
       </div>
       <div class="card featured">
-        <h4>Suscripción Premium</h4>
+        <h4 class="nombre-card">Suscripción Premium</h4>
         <p>Servicios ilimitados por un mes + uso de productos premium gratis + promociones exclusivas + prioridad en reservas.</p>
         <p class="price">RD $2500</p>
       </div>
@@ -239,37 +205,26 @@ try {
     <p>Todos los derechos reservados. <?php echo date('Y'); ?> &copy;</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="build/js/app.js"></script>
-  <script>
-    document.querySelector('.form-contacto')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      const response = await fetch('#contacto', {
-        method: 'POST',
-        body: formData
+  <script src="build/js/app.js?v=2"></script>
+  <?php if ($successMessage): ?>
+    <script>
+      Swal.fire({
+        title: '¡Éxito!',
+        text: <?= json_encode($successMessage) ?>,
+        icon: 'success',
+        confirmButtonColor: '#7d4aad'
       });
-      if (response.ok) {
-        Swal.fire({
-          title: '¡Éxito!',
-          text: 'Tu mensaje ha sido registrado correctamente.',
-          icon: 'success',
-          confirmButtonColor: '#7d4aad'
-        }).then(() => {
-          this.reset();
-          location.hash = '#contacto';
-          location.reload();
-        });
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: 'Hubo un problema al enviar el mensaje.',
-          icon: 'error',
-          confirmButtonColor: '#7d4aad'
-        });
-      }
-    });
-  </script>
+    </script>
+  <?php elseif ($errorMessage): ?>
+    <script>
+      Swal.fire({
+        title: 'Error',
+        text: <?= json_encode($errorMessage) ?>,
+        icon: 'error',
+        confirmButtonColor: '#7d4aad'
+      });
+    </script>
+  <?php endif; ?>
 </body>
 
 </html>

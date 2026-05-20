@@ -1,115 +1,122 @@
-document.addEventListener("DOMContentLoaded", function () {
-  navegacionFija();
+const galleryImages = [2, 3, 4, 5, 6, 7, 8, 9];
+
+function initializeUI() {
   crearGaleria();
+  activarNavegacionFija();
   resaltarEnlace();
   scrollNav();
-});
+  cerrarModalConEscape();
+}
 
-function navegacionFija() {
-  const header = document.querySelector(".header");
-  const sobreFestival = document.querySelector(".sobre-festival");
+function activarNavegacionFija() {
+  const header = document.querySelector('.header');
+  const hero = document.querySelector('.hero');
 
-  document.addEventListener("scroll", function () {
-    if (sobreFestival.getBoundingClientRect().bottom < 1) {
-      header.classList.add("fixed");
+  if (!header || !hero) return;
+
+  const handleScroll = () => {
+    if (hero.getBoundingClientRect().bottom <= 0) {
+      header.classList.add('fixed');
     } else {
-      header.classList.remove("fixed");
+      header.classList.remove('fixed');
+    }
+  };
+
+  document.addEventListener('scroll', handleScroll);
+  handleScroll();
+}
+
+function crearGaleria() {
+  const galeria = document.querySelector('.galeria-imagenes');
+  if (!galeria) return;
+
+  galleryImages.forEach((imageNumber) => {
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.src = `material_visual/image${imageNumber}.png`;
+    img.alt = `Galería Salón Pretty ${imageNumber}`;
+    img.classList.add('galeria-item');
+    img.addEventListener('click', () => mostrarImagen(imageNumber));
+    galeria.appendChild(img);
+  });
+}
+
+function mostrarImagen(imageNumber) {
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  modal.addEventListener('click', cerrarModal);
+
+  const image = document.createElement('img');
+  image.src = `material_visual/image${imageNumber}.png`;
+  image.alt = `Imagen grande Salón Pretty ${imageNumber}`;
+  image.classList.add('modal-image');
+
+  const closeButton = document.createElement('button');
+  closeButton.type = 'button';
+  closeButton.classList.add('btn-cerrar');
+  closeButton.textContent = 'X';
+  closeButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    cerrarModal();
+  });
+
+  modal.appendChild(image);
+  modal.appendChild(closeButton);
+  document.body.appendChild(modal);
+  document.body.classList.add('overflow-hidden');
+}
+
+function cerrarModal() {
+  const modal = document.querySelector('.modal');
+  if (!modal) return;
+  modal.classList.add('fadeOut');
+
+  setTimeout(() => {
+    modal.remove();
+    document.body.classList.remove('overflow-hidden');
+  }, 200);
+}
+
+function cerrarModalConEscape() {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      cerrarModal();
     }
   });
 }
 
-function crearGaleria() {
-  const CANTIDAD_IAMGENES = 16;
-
-  const galeria = document.querySelector(".galeria-imagenes");
-
-  for (let i = 1; i <= CANTIDAD_IAMGENES; i++) {
-    const imagen = document.createElement("IMG");
-    imagen.loading = "lazy";
-    imagen.height = "200";
-    imagen.width = "300";
-    imagen.src = `src/img/gallery/thumb/${i}.jpg`;
-    imagen.alt = "Imagen Galería";
-
-    //Event Handler
-    imagen.onclick = function () {
-      mostrarImagen(i);
-    };
-
-    galeria.appendChild(imagen);
-  }
-}
-
-function mostrarImagen(i) {
-  const imagen = document.createElement("IMG");
-  imagen.src = `src/img/gallery/full/${i}.jpg`;
-  imagen.alt = "Imagen Galería";
-
-  //Crear Boton
-  const cerrarModalBtn = document.createElement("BUTTON");
-  cerrarModalBtn.textContent = "X";
-  cerrarModalBtn.classList.add("btn-cerrar");
-  cerrarModalBtn.onclick = cerrarModal;
-
-  //Generar Modal
-  const modal = document.createElement("DIV");
-  modal.classList.add("modal");
-  modal.onclick = cerrarModal;
-
-  modal.appendChild(imagen);
-  modal.appendChild(cerrarModalBtn);
-  //Agregar HTML
-  const body = document.querySelector("body");
-  body.classList.add("overflow-hidden");
-  body.appendChild(modal);
-
-  console.log(modal);
-}
-
-function cerrarModal() {
-  const modal = document.querySelector(".modal");
-  modal.classList.add("fadeOut");
-
-  setTimeout(() => {
-    modal?.remove();
-
-    const body = document.querySelector("body");
-    body.classList.remove("overflow-hidden");
-  }, 500);
-}
-
 function resaltarEnlace() {
-  document.addEventListener("scroll", function () {
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll(".navegacion-principal a");
+  document.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navegacion-principal a');
+    let currentSection = '';
 
-    let actual = "";
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.clientHeight;
       if (window.scrollY >= sectionTop - sectionHeight / 3) {
-        actual = section.id;
+        currentSection = section.id;
       }
     });
+
     navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + actual) {
-        link.classList.add("active");
-      }
+      link.classList.toggle('active', link.getAttribute('href') === `#${currentSection}`);
     });
   });
 }
 
 function scrollNav() {
-  const navLinks = document.querySelectorAll(".navegacion-principal a");
+  const navLinks = document.querySelectorAll('.navegacion-principal a');
 
   navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const sectionScroll = e.target.getAttribute("href");
-      const section = document.querySelector(sectionScroll);
-
-      section.scrollIntoView({ behavior: "smooth" });
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   });
 }
+
+document.addEventListener('DOMContentLoaded', initializeUI);
