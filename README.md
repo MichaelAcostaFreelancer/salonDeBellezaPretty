@@ -1,56 +1,118 @@
-# 💇‍♀️ Salón de Belleza Pretty — Plataforma Web & Maquetación UI/UX
+# 💇‍♀️ Salón de Belleza Pretty — Documentación de la maqueta y el proyecto
 
-> Una solución web moderna, elegante y completamente responsiva diseñada para optimizar la experiencia visual y la gestión de servicios en un salón de belleza. El proyecto destaca por una interfaz limpia, una estética sofisticada y una arquitectura de componentes fluida.
+**Salón de Belleza Pretty** es una página de presentación responsive diseñada para mostrar un salón de belleza con una experiencia visual cuidada, propuesta de servicios, galería de trabajos y contacto directo.
 
----
+## 🎨 Maqueta de la página
+La maqueta de esta página está pensada para presentar una experiencia elegante y moderna, con énfasis en los siguientes bloques:
 
-## 📸 Maqueta y Arquitectura Visual (Mockup UI/UX)
+1. **Header fijo y claro**
+   * Navegación superior con enlaces internos a secciones principales.
+   * Diseño transparente y compacto con efecto fijo al hacer scroll.
 
-La interfaz de **Salón de Belleza Pretty** ha sido maquetada siguiendo principios de diseño centrado en el usuario, priorizando la accesibilidad, la elegancia visual y una navegación intuitiva que evoca la atmósfera del sector de la estética y el estilismo.
+2. **Hero de alto impacto**
+   * Imagen de fondo full cover que ocupa la primera vista.
+   * Overlay degradado para mejorar contraste y legibilidad.
+   * Mensaje principal claro y directo: "Estilo, cuidado y atención personalizada".
+   * Tarjeta de datos rápidos con ubicación y horario.
 
-### 🖥️ Vista Principal y Flujo de la Interfaz
-* **Header Estilizado:** Barra de navegación minimalista que incluye accesos directos rápidos a los servicios, galerías, cotizaciones y citas, adaptándose de forma elástica mediante menús hamburguesa en entornos móviles.
-* **Sección Hero de Alto Impacto:** Diseñada para capturar la atención de las usuarias desde el primer segundo, utilizando tipografías refinadas combinadas con imágenes de alta resolución optimizadas para carga rápida.
-* **Grid de Servicios:** Maquetación modular en cuadrícula para presentar de forma ordenada y atractiva los diferentes tratamientos (Corte, Color, Peinado, Manicura), integrando efectos visuales suaves al pasar el cursor (*hover*).
-* **Módulo de Citas Integrado:** Interfaz limpia con formularios validados visualmente para agilizar el agendamiento y evitar la fatiga cognitiva del usuario.
+3. **Sección "Inicio" / Sobre el salón**
+   * Imagen representativa del salón.
+   * Texto corporativo con bienvenida, historia breve y enfoque en calidad de servicio.
+   * Datos destacados como la fecha de fundación y la promesa de atención profesional.
 
-### 📱 Diseño Responsivo y Grid System
-* **Mobile-First Structure:** El diseño fue concebido para lucir impecable en smartphones, reorganizando de forma automática los bloques de contenido mediante estructuras fluidas basadas en *Flexbox* y *CSS Grid*.
-* **Optimización de Assets:** Todo el apartado multimedia (imágenes de cortes, paletas y logos) está estructurado para renderizarse de forma nítida en pantallas de alta densidad de píxeles (Retina / pantallas móviles).
+4. **Servicios**
+   * Grid responsivo con tarjetas de servicios clave.
+   * Cada tarjeta tiene título y descripción breve.
+   * Transiciones suaves para realzar la interacción.
 
----
+5. **Galería**
+   * Galería de imágenes con tarjetas clicables.
+   * Modal ligero para ver la imagen ampliada.
+   * Diseño ordenado y flexible con `CSS Grid`.
 
-## 🎨 Sistema de Diseño, Estilos y Procesamiento
+6. **Suscripciones**
+   * Tabla de opciones con planes básicos, plus y premium.
+   * Precios y beneficios destacados.
+   * Borde y sombra suave para diferenciar cada opción.
 
-La identidad visual del software utiliza un balance de tonos suaves que transmiten frescura, belleza y profesionalismo:
+7. **Contacto**
+   * Formulario de contacto integrado en la misma página.
+   * Mensajes de éxito/error dinámicos con SweetAlert2.
+   * Validación básica de campos requeridos y correo.
 
-* **Estilos Modulares con SASS:** La maquetación no utiliza CSS plano; se estructura a través de arquitectura SASS organizada en módulos independientes (variables, componentes, layouts y base) para un mantenimiento ágil de la interfaz.
-* **Paleta de Colores:** Combinación armónica de tonos pasteles elegantes, blancos puros para zonas de respiro visual, y contrastes oscuros definidos en la tipografía para garantizar la máxima legibilidad conforme a las pautas WCAG.
-* **Automatización del Diseño:** Uso de **Gulp** como motor de tareas para compilar, minificar y optimizar automáticamente las hojas de estilo, garantizando que el diseño final cargue en el navegador en milisegundos.
+8. **Footer refinado**
+   * Base de página minimalista con fondo degradado.
+   * Texto centrado y legible.
+   * Transición visual suave respecto al contenido previo.
 
----
+## 📐 Detalles de diseño visual
+* **Responsivo**: el diseño se adapta a móviles, tabletas y escritorio usando `flexbox` y `grid`.
+* **Tipografía**: Montserrat para un look moderno y legible.
+* **Colores**: paleta elegante basada en tonos lavanda, rosa suave y contraste oscuro.
+* **Sombras y transiciones**: elementos con sombras suaves, hover en tarjetas, animaciones de entrada y transiciones suaves.
+* **Imágenes**: el hero y la galería usan imágenes optimizadas para entregar una experiencia visual atractiva sin recargar el layout.
 
-## 🛠️ Tecnologías y Ecosistema Técnico
+## 🧩 Arquitectura de la página
+* `index.php` — Página principal que contiene toda la estructura HTML y el formulario de contacto.
+* `src/scss/app.scss` — Punto de entrada SASS que agrupa estilos modulares.
+* `src/scss/layout/_index.scss` — Estilos principales de layout, hero, secciones, galería y formulario.
+* `src/scss/layout/_header.scss` — Estilos del header y navegación.
+* `src/scss/layout/_footer.scss` — Estilos del footer.
+* `src/js/app.js` — JavaScript para navegación suave, secciones activas, galería modal y header fijo.
+* `build/css/app.css` — CSS generado para producción.
+* `build/js/app.js` — JS compilado (ya presente en el proyecto).
+* `material_visual/` — Imágenes del salón usadas en hero y galería.
 
-El desarrollo de la maqueta y la lógica del sitio se compone de las siguientes tecnologías:
+## 🛠️ Flujo de interacción
+* La navegación interna simula un sitio de una sola página con desplazamiento suave en `scrollIntoView`.
+* El header recibe clase `fixed` al bajar el scroll para mantenerse visible.
+* La galería genera imágenes dinámicamente desde JavaScript y abre un modal al hacer clic.
+* El formulario de contacto envía datos mediante POST a la misma página y muestra alerta de éxito/error.
 
-* **Arquitectura de Vistas:** PHP para la modularización de componentes repetitivos (Header, Footer, Modales) y manejo dinámico.
-* **Diseño y Estilos:** SASS (Syntactically Awesome Style Sheets) compilado a CSS3 avanzado.
-* **Automatizador de Tareas:** Gulp (Compilación de hojas de estilo y procesamiento optimizado de assets).
-* **Interactividad frontend:** JavaScript para animaciones dinámicas de la interfaz y control del DOM.
+## 💻 Cómo ejecutar el proyecto
+1. Abre la carpeta del proyecto en un servidor local con PHP (XAMPP, WAMP, Laragon, etc.).
+2. Accede a `index.php` desde el navegador.
+3. Si editas estilos, recompílalos con:
 
----
+```bash
+npx sass src/scss:build/css
+```
 
-## 📁 Estructura del Repositorio
+4. Si usas Gulp para tareas adicionales, ejecuta:
 
-La organización de los archivos mantiene una separación clara entre el entorno de desarrollo de diseño y el código listo para producción:
+```bash
+npm run dev
+```
 
+## 📁 Estructura del repositorio
 ```text
-├── src/                # Código fuente de diseño
-│   ├── scss/           # Estructura modular de estilos SASS
-│   └── js/             # Scripts de interactividad de la UI
-├── build/              # Código compilado y optimizado por Gulp (CSS/JS finales)
-├── img/                # Galería de imágenes y recursos visuales del salón
-├── includes/           # Componentes repetitivos maquetados en PHP (templates)
-├── index.html / .php   # Estructura de la página principal
-└── README.md           # Documentación del proyecto
+proyectoFinalIsmerliYHeilisa/
+├── build/
+│   ├── css/app.css
+│   └── js/app.js
+├── material_visual/
+│   ├── image1.png
+│   ├── image2.png
+│   └── image3.png ...
+├── src/
+│   ├── js/app.js
+│   └── scss/
+│       ├── app.scss
+│       └── layout/
+│           ├── _footer.scss
+│           ├── _header.scss
+│           ├── _galeria.scss
+│           └── _index.scss
+├── index.php
+├── gulpfile.js
+├── package.json
+└── README.md
+```
+
+## 🧹 Limpieza realizada
+* Se eliminaron componentes y estilos de festival/EDM que no se usan.
+* Se concentró el diseño en la identidad de un salón de belleza.
+* Se mantuvo el código esencial: hero, servicios, galería, suscripciones y contacto.
+
+## 📌 Observaciones finales
+Esta documentación describe la maqueta actual de la página, su propósito visual y técnico, y los componentes clave del proyecto. El README está diseñado para que cualquier desarrollador entienda rápidamente la intención de la interfaz y cómo trabajar con el proyecto.

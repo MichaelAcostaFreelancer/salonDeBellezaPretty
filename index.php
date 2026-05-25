@@ -76,7 +76,7 @@ if ($conn->connect_error) {
   </header>
 
   <section class="hero">
-    <img src="material_visual/image1.png" alt="Salón Pretty" class="hero-img" />
+    <img src="contenidoVisual/image1.png" alt="Salón Pretty" class="hero-img" />
     <div class="hero-overlay">
       <div class="hero-text contenedor">
         <h2>Estilo, cuidado y atención personalizada</h2>
@@ -90,7 +90,7 @@ if ($conn->connect_error) {
 
   <section id="inicio" class="sobre-salon contenedor">
     <div class="imagen">
-      <img src="material_visual/image2.png" alt="Interior Salón Pretty" />
+      <img src="contenidoVisual/image2.png" alt="Interior Salón Pretty" />
     </div>
     <div class="contenido-salon">
       <h2>Bienvenida a Salón de Belleza Pretty</h2>

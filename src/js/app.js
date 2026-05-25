@@ -33,7 +33,7 @@ function crearGaleria() {
   galleryImages.forEach((imageNumber) => {
     const img = document.createElement('img');
     img.loading = 'lazy';
-    img.src = `material_visual/image${imageNumber}.png`;
+    img.src = `contenidoVisual/image${imageNumber}.png`;
     img.alt = `Galería Salón Pretty ${imageNumber}`;
     img.classList.add('galeria-item');
     img.addEventListener('click', () => mostrarImagen(imageNumber));
@@ -47,7 +47,7 @@ function mostrarImagen(imageNumber) {
   modal.addEventListener('click', cerrarModal);
 
   const image = document.createElement('img');
-  image.src = `material_visual/image${imageNumber}.png`;
+  image.src = `contenidoVisual/image${imageNumber}.png`;
   image.alt = `Imagen grande Salón Pretty ${imageNumber}`;
   image.classList.add('modal-image');
 
