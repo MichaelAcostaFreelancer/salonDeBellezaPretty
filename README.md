@@ -61,7 +61,7 @@ La maqueta de esta página está pensada para presentar una experiencia elegante
 * `src/js/app.js` — JavaScript para navegación suave, secciones activas, galería modal y header fijo.
 * `build/css/app.css` — CSS generado para producción.
 * `build/js/app.js` — JS compilado (ya presente en el proyecto).
-* `material_visual/` — Imágenes del salón usadas en hero y galería.
+* `contenidoVisual/` — Imágenes del salón usadas en hero y galería.
 
 ## 🛠️ Flujo de interacción
 * La navegación interna simula un sitio de una sola página con desplazamiento suave en `scrollIntoView`.
@@ -90,7 +90,7 @@ proyectoFinalIsmerliYHeilisa/
 ├── build/
 │   ├── css/app.css
 │   └── js/app.js
-├── material_visual/
+├── contenidoVisual/
 │   ├── image1.png
 │   ├── image2.png
 │   └── image3.png ...
